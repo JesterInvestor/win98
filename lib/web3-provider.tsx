@@ -8,7 +8,11 @@ import { WagmiAdapter } from '@reown/appkit-adapter-wagmi'
 import type { ReactNode } from 'react'
 
 // 1. Get projectId from https://cloud.reown.com
-const projectId = process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID || 'YOUR_PROJECT_ID'
+const projectId = process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID || 'demo-project-id'
+
+if (!process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID) {
+  console.warn('NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID is not set. Using demo project ID. Wallet connection will not work in production.')
+}
 
 // 2. Set up the Wagmi adapter
 const networks = [mainnet, base]

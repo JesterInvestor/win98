@@ -1,0 +1,20 @@
+{
+  "accountAssociation": {
+    "header": "farcaster-verify",
+    "payload": "win98-emulator"
+  },
+  "frame": {
+    "version": "next",
+    "imageUrl": "https://win98.vercel.app/windows98-logo.png",
+    "button": {
+      "title": "Launch WIN98",
+      "action": {
+        "type": "launch_frame",
+        "name": "WIN98 Emulator",
+        "url": "https://win98.vercel.app",
+        "splashImageUrl": "https://win98.vercel.app/windows98-logo.png",
+        "splashBackgroundColor": "#008080"
+      }
+    }
+  }
+}

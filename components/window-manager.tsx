@@ -44,6 +44,8 @@ export function WindowManager({ windows, onClose, onFocus, onMinimize, onMaximiz
       case "documents":
       case "network":
         return <Explorer />
+      case "games":
+        return <Explorer initialPath={"C:\\Games\\"} />
       case "solitaire":
         return <Solitaire />
       case "control":

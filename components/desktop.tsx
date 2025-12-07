@@ -29,8 +29,7 @@ export function Desktop({ onClick, onOpenWindow }: DesktopProps) {
     { name: "Recycle Bin", icon: Trash2, app: "recycle" },
     { name: "Internet Explorer", icon: Globe, app: "ie" },
     { name: "My Documents", icon: Folder, app: "documents" },
-    { name: "Network Neighborhood", icon: HardDrive, app: "network" },
-    { name: "Control Panel", icon: Settings, app: "control" },
+    { name: "Games", icon: Gamepad2, app: "games" },
     { name: "Notepad", icon: FileText, app: "notepad" },
     { name: "Calculator", icon: Calculator, app: "calculator" },
     { name: "Paint", icon: Palette, app: "paint" },
@@ -46,7 +45,7 @@ export function Desktop({ onClick, onOpenWindow }: DesktopProps) {
     <div className="absolute inset-0 p-2" onClick={onClick} style={wallpaperStyle}>
       {settings.desktop.showDesktopIcons && (
         <div className="grid grid-cols-1 gap-4 w-20">
-          {desktopIcons.map((icon, index) => (
+          {desktopIcons.slice(0, 8).map((icon, index) => (
             <div
               key={index}
               className="flex flex-col items-center cursor-pointer hover:bg-blue-600/20 p-2 rounded transition-colors"

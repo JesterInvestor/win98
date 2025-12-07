@@ -11,9 +11,8 @@ interface FileItem {
   modified?: string
   icon?: any
 }
-
-export function Explorer() {
-  const [currentPath, setCurrentPath] = useState("C:\\")
+export function Explorer({ initialPath }: { initialPath?: string }) {
+  const [currentPath, setCurrentPath] = useState(initialPath ?? "C:\\")
   const [selectedItem, setSelectedItem] = useState<string | null>(null)
   const [history, setHistory] = useState(["C:\\"])
   const [historyIndex, setHistoryIndex] = useState(0)
@@ -27,6 +26,13 @@ export function Explorer() {
       { name: "autoexec.bat", type: "file", size: "1 KB", modified: "3/15/98", icon: FileText },
       { name: "config.sys", type: "file", size: "2 KB", modified: "3/15/98", icon: FileText },
       { name: "readme.txt", type: "file", size: "5 KB", modified: "4/20/98", icon: FileText },
+    ],
+    "C:\\Games\\": [
+      { name: "Minesweeper", type: "folder", icon: Folder },
+      { name: "Solitaire", type: "folder", icon: Folder },
+      { name: "Snake", type: "folder", icon: Folder },
+      { name: "FreeCell", type: "folder", icon: Folder },
+      { name: "Hearts", type: "folder", icon: Folder },
     ],
     "C:\\Program Files\\": [
       { name: "Internet Explorer", type: "folder", icon: Folder },

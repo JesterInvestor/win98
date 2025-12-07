@@ -23,9 +23,10 @@ import {
 interface StartMenuProps {
   onClose: () => void
   onOpenWindow: (app: string) => void
+  onShutdown: () => void
 }
 
-export function StartMenu({ onClose, onOpenWindow }: StartMenuProps) {
+export function StartMenu({ onClose, onOpenWindow, onShutdown }: StartMenuProps) {
   const [hoveredCategory, setHoveredCategory] = useState<string | null>(null)
 
   const menuItems = [
@@ -176,7 +177,10 @@ export function StartMenu({ onClose, onOpenWindow }: StartMenuProps) {
 
         <Button
           className="w-full justify-start h-8 px-2 bg-transparent hover:bg-blue-600 hover:text-white text-black text-xs border-none"
-          onClick={() => onOpenWindow("shutdown")}
+          onClick={() => {
+            onOpenWindow("shutdown")
+            onClose()
+          }}
         >
           <Power size={16} className="mr-2" />
           Shut Down...

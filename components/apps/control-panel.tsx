@@ -565,11 +565,11 @@ export function ControlPanel() {
   }
 
   return (
-    <div className="h-full bg-[#c0c0c0] flex">
+    <div className="h-full bg-[#c0c0c0] flex flex-col md:flex-row">
       {!selectedCategory ? (
         <div className="flex-1 p-4 overflow-hidden">
           <div className="h-full overflow-y-auto control-panel-scroll">
-            <div className="grid grid-cols-2 gap-4 pb-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pb-4">
               {categories.map((category, index) => (
                 <div
                   key={index}
@@ -595,7 +595,7 @@ export function ControlPanel() {
             >
               ← Back
             </Button>
-            <span className="font-bold">{selectedCategory}</span>
+            <span className="font-bold text-xs md:text-sm">{selectedCategory}</span>
           </div>
           <div className="flex-1 overflow-auto">{renderSettings()}</div>
           <div className="bg-[#c0c0c0] border-t border-[#808080] p-2 flex justify-end gap-2">

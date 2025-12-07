@@ -6,49 +6,38 @@ import { useAppKit } from '@reown/appkit/react'
 
 interface GatePageProps {
   onEnter: () => void
+  sessionTime: number
 }
 
-export function GatePage({ onEnter }: GatePageProps) {
+export function GatePage({ onEnter, sessionTime }: GatePageProps) {
   const { address, isConnected } = useAccount()
   const { open } = useAppKit()
-  const [timeLeft, setTimeLeft] = useState(3600) // 1 hour in seconds
-  const [lastClaim, setLastClaim] = useState<number | null>(null)
+  const [earnedTokens, setEarnedTokens] = useState(0)
 
   useEffect(() => {
-    // Load last claim time from localStorage
-    const stored = localStorage.getItem('lastWin98Claim')
-    if (stored) {
-      setLastClaim(parseInt(stored))
-    }
-  }, [])
-
-  useEffect(() => {
-    if (!lastClaim) return
-
-    const timer = setInterval(() => {
-      const elapsed = Math.floor((Date.now() - lastClaim) / 1000)
-      const remaining = Math.max(0, 3600 - elapsed)
-      setTimeLeft(remaining)
-    }, 1000)
-
-    return () => clearInterval(timer)
-  }, [lastClaim])
+    // Calculate earned tokens based on session time (1 token per second)
+    setEarnedTokens(sessionTime)
+  }, [sessionTime])
 
   const handleClaim = () => {
-    const now = Date.now()
-    localStorage.setItem('lastWin98Claim', now.toString())
-    setLastClaim(now)
-    // In a real app, this would trigger a smart contract transaction
-    alert('Congratulations! You have claimed your $WIN98 tokens!')
+    if (earnedTokens > 0) {
+      // In a real app, this would trigger a smart contract transaction
+      alert(`Congratulations! You have claimed ${earnedTokens} $WIN98 tokens!`)
+      // Reset would happen after successful blockchain transaction
+    }
   }
 
-  const canClaim = !lastClaim || timeLeft === 0
+  const canClaim = earnedTokens > 0
 
   const formatTime = (seconds: number) => {
     const hours = Math.floor(seconds / 3600)
     const minutes = Math.floor((seconds % 3600) / 60)
     const secs = seconds % 60
     return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`
+  }
+
+  const formatTokens = (tokens: number) => {
+    return tokens.toLocaleString()
   }
 
   return (
@@ -100,12 +89,15 @@ export function GatePage({ onEnter }: GatePageProps) {
               </div>
 
               <div className="bg-white border-t border-l border-[#808080] border-r border-b border-[#ffffff] p-3">
-                <p className="text-xs font-bold mb-2">$WIN98 Token Timer</p>
+                <p className="text-xs font-bold mb-2">Session Time & Earnings</p>
+                <div className="text-center mb-3">
+                  <div className="text-xs text-gray-600 mb-1">Time Connected</div>
+                  <div className="text-2xl font-mono mb-2">{formatTime(sessionTime)}</div>
+                </div>
                 <div className="text-center">
-                  <div className="text-2xl font-mono mb-1">{formatTime(timeLeft)}</div>
-                  <p className="text-[10px] text-gray-600">
-                    {canClaim ? 'Ready to claim!' : 'Time until next claim'}
-                  </p>
+                  <div className="text-xs text-gray-600 mb-1">$WIN98 Earned</div>
+                  <div className="text-2xl font-mono text-green-700">{formatTokens(earnedTokens)}</div>
+                  <p className="text-[10px] text-gray-500 mt-1">1 token per second</p>
                 </div>
               </div>
 
@@ -116,7 +108,7 @@ export function GatePage({ onEnter }: GatePageProps) {
                   canClaim ? 'hover:bg-[#d0d0d0] cursor-pointer' : 'opacity-50 cursor-not-allowed'
                 }`}
               >
-                <span className="font-bold">Claim $WIN98</span>
+                <span className="font-bold">Claim {formatTokens(earnedTokens)} $WIN98</span>
               </button>
 
               <button

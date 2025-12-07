@@ -50,7 +50,7 @@ export function Desktop({ onClick, onOpenWindow }: DesktopProps) {
             <div
               key={index}
               className="flex flex-col items-center cursor-pointer hover:bg-blue-600/20 p-2 rounded transition-colors"
-              onDoubleClick={(e) => {
+              onClick={(e) => {
                 e.stopPropagation()
                 onOpenWindow(icon.app)
               }}

@@ -1,6 +1,7 @@
 "use client"
 import { Button } from "@/components/ui/button"
 import { Volume2, Wifi, Clock } from "lucide-react"
+import { formatTime } from "@/lib/utils"
 
 interface TaskbarProps {
   onStartClick: () => void
@@ -11,12 +12,6 @@ interface TaskbarProps {
 }
 
 export function Taskbar({ onStartClick, currentTime, windows, onWindowClick, sessionTime }: TaskbarProps) {
-  const formatSessionTime = (seconds: number) => {
-    const hours = Math.floor(seconds / 3600)
-    const minutes = Math.floor((seconds % 3600) / 60)
-    const secs = seconds % 60
-    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`
-  }
   return (
     <div className="absolute bottom-0 left-0 right-0 h-8 bg-[#c0c0c0] border-t-2 border-white border-l-2 border-r border-b border-[#808080] flex items-center px-1">
       {/* Start Button */}
@@ -54,7 +49,7 @@ export function Taskbar({ onStartClick, currentTime, windows, onWindowClick, ses
         {sessionTime > 0 && (
           <div className="bg-[#c0c0c0] border border-[#808080] px-2 py-1 text-[10px] text-black flex items-center gap-1" title="Session Time">
             <Clock size={10} />
-            {formatSessionTime(sessionTime)}
+            {formatTime(sessionTime)}
           </div>
         )}
         <div className="bg-[#c0c0c0] border border-[#808080] px-2 py-1 text-xs text-black">

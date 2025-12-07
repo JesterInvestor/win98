@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useAccount } from 'wagmi'
 import { useAppKit } from '@reown/appkit/react'
+import { formatTime, formatNumber } from '@/lib/utils'
 
 interface GatePageProps {
   onEnter: () => void
@@ -28,17 +29,6 @@ export function GatePage({ onEnter, sessionTime }: GatePageProps) {
   }
 
   const canClaim = earnedTokens > 0
-
-  const formatTime = (seconds: number) => {
-    const hours = Math.floor(seconds / 3600)
-    const minutes = Math.floor((seconds % 3600) / 60)
-    const secs = seconds % 60
-    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`
-  }
-
-  const formatTokens = (tokens: number) => {
-    return tokens.toLocaleString()
-  }
 
   return (
     <div className="min-h-screen w-full bg-[#008080] flex items-center justify-center p-4 font-['MS_Sans_Serif',_'Tahoma',_sans-serif]">
@@ -96,7 +86,7 @@ export function GatePage({ onEnter, sessionTime }: GatePageProps) {
                 </div>
                 <div className="text-center">
                   <div className="text-xs text-gray-600 mb-1">$WIN98 Earned</div>
-                  <div className="text-2xl font-mono text-green-700">{formatTokens(earnedTokens)}</div>
+                  <div className="text-2xl font-mono text-green-700">{formatNumber(earnedTokens)}</div>
                   <p className="text-[10px] text-gray-500 mt-1">1 token per second</p>
                 </div>
               </div>
@@ -108,7 +98,7 @@ export function GatePage({ onEnter, sessionTime }: GatePageProps) {
                   canClaim ? 'hover:bg-[#d0d0d0] cursor-pointer' : 'opacity-50 cursor-not-allowed'
                 }`}
               >
-                <span className="font-bold">Claim {formatTokens(earnedTokens)} $WIN98</span>
+                <span className="font-bold">Claim {formatNumber(earnedTokens)} $WIN98</span>
               </button>
 
               <button

@@ -255,86 +255,98 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Sound effect functions (using Web Audio API for retro beeps)
-  const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+  // Lazy initialization to avoid issues with browsers requiring user interaction
+  let audioContext = null;
+  
+  function getAudioContext() {
+    if (!audioContext) {
+      audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    return audioContext;
+  }
 
   function playFloppySound() {
     // Simulate floppy disk drive sound
-    const oscillator = audioContext.createOscillator();
-    const gainNode = audioContext.createGain();
+    const ctx = getAudioContext();
+    const oscillator = ctx.createOscillator();
+    const gainNode = ctx.createGain();
     
     oscillator.connect(gainNode);
-    gainNode.connect(audioContext.destination);
+    gainNode.connect(ctx.destination);
     
     oscillator.type = 'sawtooth';
-    oscillator.frequency.setValueAtTime(200, audioContext.currentTime);
-    oscillator.frequency.exponentialRampToValueAtTime(100, audioContext.currentTime + 0.3);
+    oscillator.frequency.setValueAtTime(200, ctx.currentTime);
+    oscillator.frequency.exponentialRampToValueAtTime(100, ctx.currentTime + 0.3);
     
-    gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
-    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+    gainNode.gain.setValueAtTime(0.1, ctx.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
     
-    oscillator.start(audioContext.currentTime);
-    oscillator.stop(audioContext.currentTime + 0.3);
+    oscillator.start(ctx.currentTime);
+    oscillator.stop(ctx.currentTime + 0.3);
   }
 
   function playHoverSound() {
     // Subtle hover beep
-    const oscillator = audioContext.createOscillator();
-    const gainNode = audioContext.createGain();
+    const ctx = getAudioContext();
+    const oscillator = ctx.createOscillator();
+    const gainNode = ctx.createGain();
     
     oscillator.connect(gainNode);
-    gainNode.connect(audioContext.destination);
+    gainNode.connect(ctx.destination);
     
     oscillator.type = 'sine';
-    oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+    oscillator.frequency.setValueAtTime(800, ctx.currentTime);
     
-    gainNode.gain.setValueAtTime(0.05, audioContext.currentTime);
-    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.05);
+    gainNode.gain.setValueAtTime(0.05, ctx.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.05);
     
-    oscillator.start(audioContext.currentTime);
-    oscillator.stop(audioContext.currentTime + 0.05);
+    oscillator.start(ctx.currentTime);
+    oscillator.stop(ctx.currentTime + 0.05);
   }
 
   function playSwipeSound() {
     // Swipe/navigation sound
-    const oscillator = audioContext.createOscillator();
-    const gainNode = audioContext.createGain();
+    const ctx = getAudioContext();
+    const oscillator = ctx.createOscillator();
+    const gainNode = ctx.createGain();
     
     oscillator.connect(gainNode);
-    gainNode.connect(audioContext.destination);
+    gainNode.connect(ctx.destination);
     
     oscillator.type = 'square';
-    oscillator.frequency.setValueAtTime(600, audioContext.currentTime);
-    oscillator.frequency.linearRampToValueAtTime(300, audioContext.currentTime + 0.1);
+    oscillator.frequency.setValueAtTime(600, ctx.currentTime);
+    oscillator.frequency.linearRampToValueAtTime(300, ctx.currentTime + 0.1);
     
-    gainNode.gain.setValueAtTime(0.08, audioContext.currentTime);
-    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+    gainNode.gain.setValueAtTime(0.08, ctx.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1);
     
-    oscillator.start(audioContext.currentTime);
-    oscillator.stop(audioContext.currentTime + 0.1);
+    oscillator.start(ctx.currentTime);
+    oscillator.stop(ctx.currentTime + 0.1);
   }
 
   // Add keyboard click sound when keys are pressed
   document.addEventListener('keydown', (e) => {
-    if (e.key.length === 1 || ['Enter', 'Backspace', 'Tab', 'Space'].includes(e.key)) {
+    if (e.key.length === 1 || ['Enter', 'Backspace', 'Tab', ' '].includes(e.key)) {
       playKeySound();
     }
   });
 
   function playKeySound() {
-    const oscillator = audioContext.createOscillator();
-    const gainNode = audioContext.createGain();
+    const ctx = getAudioContext();
+    const oscillator = ctx.createOscillator();
+    const gainNode = ctx.createGain();
     
     oscillator.connect(gainNode);
-    gainNode.connect(audioContext.destination);
+    gainNode.connect(ctx.destination);
     
     oscillator.type = 'sine';
-    oscillator.frequency.setValueAtTime(400 + Math.random() * 200, audioContext.currentTime);
+    oscillator.frequency.setValueAtTime(400 + Math.random() * 200, ctx.currentTime);
     
-    gainNode.gain.setValueAtTime(0.03, audioContext.currentTime);
-    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.03);
+    gainNode.gain.setValueAtTime(0.03, ctx.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.03);
     
-    oscillator.start(audioContext.currentTime);
-    oscillator.stop(audioContext.currentTime + 0.03);
+    oscillator.start(ctx.currentTime);
+    oscillator.stop(ctx.currentTime + 0.03);
   }
 
   // Easter egg: Konami code

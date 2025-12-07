@@ -95,7 +95,7 @@ export function Window({
   }, [isDragging, isResizing, dragStart, maximized, onMove])
 
   const windowStyle = maximized
-    ? { top: 0, left: 0, width: "100vw", height: "calc(100vh - 32px)" }
+    ? { top: 0, left: 0, width: "100%", height: "calc(100vh - 32px)" }
     : { top: y, left: x, width, height }
 
   return (

@@ -62,7 +62,7 @@ export function useWindows() {
       height: config.height,
       focused: true,
       minimized: false,
-      maximized: false,
+      maximized: true, // Open all windows in fullscreen
     }
 
     setWindows((prev) => [...prev.map((w) => ({ ...w, focused: false })), newWindow])

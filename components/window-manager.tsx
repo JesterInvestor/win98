@@ -10,6 +10,8 @@ import { Solitaire } from "@/components/apps/solitaire"
 import { ControlPanel } from "@/components/apps/control-panel"
 import { InternetExplorer } from "@/components/apps/internet-explorer"
 import { Snake } from "@/components/apps/snake"
+import { ShutdownDialog } from "@/components/apps/shutdown-dialog"
+
 // Generic fallback for apps we haven't built yet
 const Placeholder = ({ name }: { name: string }) => (
   <div className="p-4 text-xs">{name} is not implemented yet. Stay tuned!</div>
@@ -22,10 +24,11 @@ interface WindowManagerProps {
   onMinimize: (id: string) => void
   onMaximize: (id: string) => void
   onUpdate: (id: string, updates: any) => void
+  onShutdown?: () => void
 }
 
-export function WindowManager({ windows, onClose, onFocus, onMinimize, onMaximize, onUpdate }: WindowManagerProps) {
-  const renderApp = (app: string) => {
+export function WindowManager({ windows, onClose, onFocus, onMinimize, onMaximize, onUpdate, onShutdown }: WindowManagerProps) {
+  const renderApp = (app: string, windowId: string) => {
     switch (app) {
       case "notepad":
         return <Notepad />
@@ -47,6 +50,10 @@ export function WindowManager({ windows, onClose, onFocus, onMinimize, onMaximiz
         return <ControlPanel />
       case "ie":
         return <InternetExplorer />
+      case "shutdown":
+        return <ShutdownDialog onShutdown={() => {
+          onShutdown?.()
+        }} onCancel={() => onClose(windowId)} />
       /* ---- not-yet-implemented apps fall through ---- */
       default:
         return <Placeholder name={app} />
@@ -74,7 +81,7 @@ export function WindowManager({ windows, onClose, onFocus, onMinimize, onMaximiz
           onMove={(x, y) => onUpdate(window.id, { x, y })}
           onResize={(width, height) => onUpdate(window.id, { width, height })}
         >
-          {renderApp(window.app)}
+          {renderApp(window.app, window.id)}
         </Window>
       ))}
     </>

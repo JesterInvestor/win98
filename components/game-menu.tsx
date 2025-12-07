@@ -235,6 +235,7 @@ export function GameMenu({ onDiskClick, onSwipeDown, onArrowDown }: GameMenuProp
             className={`absolute w-[120px] h-[140px] bg-gradient-to-br from-[#2a2a2a] to-[#1a1a1a] border-3 border-black rounded-lg cursor-pointer shadow-[0_8px_16px_rgba(0,0,0,0.8)] transition-all duration-200 hover:scale-110 hover:translate-y-[-5px] hover:shadow-[0_12px_24px_rgba(0,0,0,0.9)] hover:z-20 active:scale-105 active:translate-y-[-2px] z-10 p-2.5 flex flex-col ${disk.position}`}
             onClick={() => handleDiskClick(disk.id, disk.name, disk.subtitle)}
             onMouseEnter={() => playSound('hover')}
+            onTouchStart={() => playSound('hover')}
           >
             {/* Floppy disk top */}
             <div className="w-full h-[25px] bg-gradient-to-r from-[#3a3a3a] to-[#2a2a2a] rounded mb-2 shadow-[inset_0_2px_4px_rgba(0,0,0,0.5)]" />

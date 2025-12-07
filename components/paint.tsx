@@ -28,13 +28,35 @@ export function Paint() {
     }
   }, [])
 
-  const startDrawing = (e: React.MouseEvent<HTMLCanvasElement>) => {
+  const getCanvasCoords = (
+    canvas: HTMLCanvasElement,
+    e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>,
+  ) => {
+    const rect = canvas.getBoundingClientRect()
+
+    if ("touches" in e) {
+      const touch = e.touches[0] ?? e.changedTouches[0]
+      return {
+        x: touch.clientX - rect.left,
+        y: touch.clientY - rect.top,
+      }
+    }
+
+    return {
+      x: (e as React.MouseEvent<HTMLCanvasElement>).clientX - rect.left,
+      y: (e as React.MouseEvent<HTMLCanvasElement>).clientY - rect.top,
+    }
+  }
+
+  const startDrawing = (e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
     const canvas = canvasRef.current
     if (!canvas) return
 
-    const rect = canvas.getBoundingClientRect()
-    const x = e.clientX - rect.left
-    const y = e.clientY - rect.top
+    if ("touches" in e) {
+      e.preventDefault()
+    }
+
+    const { x, y } = getCanvasCoords(canvas, e)
 
     setIsDrawing(true)
     setLastX(x)
@@ -49,7 +71,7 @@ export function Paint() {
     }
   }
 
-  const draw = (e: React.MouseEvent<HTMLCanvasElement>) => {
+  const draw = (e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
     if (!isDrawing) return
 
     const canvas = canvasRef.current
@@ -58,9 +80,11 @@ export function Paint() {
     const ctx = canvas.getContext("2d")
     if (!ctx) return
 
-    const rect = canvas.getBoundingClientRect()
-    const x = e.clientX - rect.left
-    const y = e.clientY - rect.top
+    if ("touches" in e) {
+      e.preventDefault()
+    }
+
+    const { x, y } = getCanvasCoords(canvas, e)
 
     if (currentTool === "brush") {
       ctx.globalCompositeOperation = "source-over"
@@ -80,7 +104,7 @@ export function Paint() {
     }
   }
 
-  const stopDrawing = (e: React.MouseEvent<HTMLCanvasElement>) => {
+  const stopDrawing = (e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
     if (!isDrawing) return
 
     const canvas = canvasRef.current
@@ -89,9 +113,11 @@ export function Paint() {
     const ctx = canvas.getContext("2d")
     if (!ctx) return
 
-    const rect = canvas.getBoundingClientRect()
-    const x = e.clientX - rect.left
-    const y = e.clientY - rect.top
+    if ("changedTouches" in e) {
+      e.preventDefault()
+    }
+
+    const { x, y } = getCanvasCoords(canvas, e)
 
     if (currentTool === "line") {
       ctx.globalCompositeOperation = "source-over"
@@ -306,6 +332,10 @@ export function Paint() {
             onMouseMove={draw}
             onMouseUp={stopDrawing}
             onMouseLeave={stopDrawing}
+            onTouchStart={startDrawing}
+            onTouchMove={draw}
+            onTouchEnd={stopDrawing}
+            onTouchCancel={stopDrawing}
           />
         </div>
       </div>

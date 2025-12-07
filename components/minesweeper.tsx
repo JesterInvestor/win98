@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { Button } from "@/components/ui/button"
 
 interface Cell {
@@ -138,8 +138,8 @@ export function Minesweeper() {
     }
   }
 
-  const toggleFlag = (row: number, col: number, e: React.MouseEvent) => {
-    e.preventDefault()
+  const toggleFlag = (row: number, col: number, e?: React.MouseEvent | any) => {
+    e?.preventDefault()
     if (gameStatus !== "playing" || board[row][col].isRevealed) {
       return
     }
@@ -191,22 +191,51 @@ export function Minesweeper() {
 
       {/* Game Board */}
       <div className="grid grid-cols-9 gap-0 border-2 border-[#808080] border-t-white border-l-white">
-        {board.map((row, rowIndex) =>
-          row.map((cell, colIndex) => (
-            <Button
-              key={`${rowIndex}-${colIndex}`}
-              onClick={() => revealCell(rowIndex, colIndex)}
-              onContextMenu={(e) => toggleFlag(rowIndex, colIndex, e)}
-              className={`w-6 h-6 p-0 text-xs font-bold border ${
-                cell.isRevealed
-                  ? "bg-[#c0c0c0] border-[#808080]"
-                  : "bg-[#c0c0c0] border-2 border-white border-r-[#808080] border-b-[#808080] hover:bg-[#c0c0c0]"
-              } ${getCellColor(cell)}`}
-            >
-              {getCellContent(cell)}
-            </Button>
-          )),
-        )}
+        {(() => {
+          const touchTimeoutRef = useRef<number | null>(null)
+          const touchLongPressRef = useRef(false)
+
+          return board.map((row, rowIndex) =>
+            row.map((cell, colIndex) => (
+              <Button
+                key={`${rowIndex}-${colIndex}`}
+                onClick={() => revealCell(rowIndex, colIndex)}
+                onContextMenu={(e) => toggleFlag(rowIndex, colIndex, e)}
+                onTouchStart={(e) => {
+                  e.preventDefault()
+                  touchLongPressRef.current = false
+                  touchTimeoutRef.current = window.setTimeout(() => {
+                    touchLongPressRef.current = true
+                    toggleFlag(rowIndex, colIndex)
+                  }, 600)
+                }}
+                onTouchEnd={(e) => {
+                  e.preventDefault()
+                  if (touchTimeoutRef.current) {
+                    clearTimeout(touchTimeoutRef.current)
+                    touchTimeoutRef.current = null
+                  }
+                  if (!touchLongPressRef.current) {
+                    revealCell(rowIndex, colIndex)
+                  }
+                }}
+                onTouchCancel={(e) => {
+                  if (touchTimeoutRef.current) {
+                    clearTimeout(touchTimeoutRef.current)
+                    touchTimeoutRef.current = null
+                  }
+                }}
+                className={`w-6 h-6 p-0 text-xs font-bold border ${
+                  cell.isRevealed
+                    ? "bg-[#c0c0c0] border-[#808080]"
+                    : "bg-[#c0c0c0] border-2 border-white border-r-[#808080] border-b-[#808080] hover:bg-[#c0c0c0]"
+                } ${getCellColor(cell)}`}
+              >
+                {getCellContent(cell)}
+              </Button>
+            )),
+          )
+        })()}
       </div>
 
       {gameStatus === "won" && (

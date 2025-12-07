@@ -131,6 +131,10 @@ export function StartMenu({ onClose, onOpenWindow, onShutdown }: StartMenuProps)
                     className="relative"
                     onMouseEnter={() => setHoveredCategory(category.name)}
                     onMouseLeave={() => setHoveredCategory(null)}
+                    onTouchStart={(e) => {
+                      e.stopPropagation()
+                      setHoveredCategory((prev) => (prev === category.name ? null : category.name))
+                    }}
                   >
                     <Button className="w-full justify-start h-8 px-2 bg-transparent hover:bg-blue-600 hover:text-white text-black text-xs border-none">
                       <Folder size={16} className="mr-2" />

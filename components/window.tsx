@@ -50,12 +50,32 @@ export function Window({
 
   if (minimized) return null
 
-  const handleMouseDown = (e: React.MouseEvent) => {
-    if (e.target === e.currentTarget || (e.target as HTMLElement).classList.contains("title-bar")) {
+  const getPointerCoords = (e: MouseEvent | TouchEvent | React.MouseEvent | React.TouchEvent) => {
+    if ("touches" in (e as any) && (e as any).touches.length) {
+      const t = (e as any).touches[0]
+      return { clientX: t.clientX, clientY: t.clientY }
+    }
+
+    if ("changedTouches" in (e as any) && (e as any).changedTouches.length) {
+      const t = (e as any).changedTouches[0]
+      return { clientX: t.clientX, clientY: t.clientY }
+    }
+
+    return { clientX: (e as any).clientX, clientY: (e as any).clientY }
+  }
+
+  const handleMouseDown = (e: React.MouseEvent | React.TouchEvent) => {
+    const target = e.target as Element
+    if (target === e.currentTarget || target.classList.contains("title-bar")) {
+      if ("touches" in e) {
+        e.preventDefault()
+      }
+
+      const coords = getPointerCoords(e as any)
       setIsDragging(true)
       setDragStart({
-        x: e.clientX - x,
-        y: e.clientY - y,
+        x: coords.clientX - x,
+        y: coords.clientY - y,
       })
       onFocus()
     }
@@ -73,23 +93,30 @@ export function Window({
   }
 
   useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
+    const handleMove = (e: MouseEvent | TouchEvent) => {
+      const coords = getPointerCoords(e as any)
       if (isDragging && !maximized) {
-        onMove(e.clientX - dragStart.x, e.clientY - dragStart.y)
+        onMove(coords.clientX - dragStart.x, coords.clientY - dragStart.y)
       }
     }
 
-    const handleMouseUp = () => {
+    const handleUp = () => {
       setIsDragging(false)
       setIsResizing(false)
     }
 
     if (isDragging || isResizing) {
-      document.addEventListener("mousemove", handleMouseMove)
-      document.addEventListener("mouseup", handleMouseUp)
+      document.addEventListener("mousemove", handleMove)
+      document.addEventListener("mouseup", handleUp)
+      document.addEventListener("touchmove", handleMove, { passive: false })
+      document.addEventListener("touchend", handleUp)
+      document.addEventListener("touchcancel", handleUp)
       return () => {
-        document.removeEventListener("mousemove", handleMouseMove)
-        document.removeEventListener("mouseup", handleMouseUp)
+        document.removeEventListener("mousemove", handleMove)
+        document.removeEventListener("mouseup", handleUp)
+        document.removeEventListener("touchmove", handleMove)
+        document.removeEventListener("touchend", handleUp)
+        document.removeEventListener("touchcancel", handleUp)
       }
     }
   }, [isDragging, isResizing, dragStart, maximized, onMove])
@@ -106,6 +133,7 @@ export function Window({
       }`}
       style={windowStyle}
       onMouseDown={handleMouseDown}
+      onTouchStart={handleMouseDown}
       onClick={onFocus}
     >
       {/* Title Bar */}
@@ -146,6 +174,11 @@ export function Window({
           className="absolute bottom-0 right-0 w-3 h-3 cursor-se-resize"
           onMouseDown={(e) => {
             e.stopPropagation()
+            setIsResizing(true)
+          }}
+          onTouchStart={(e) => {
+            e.stopPropagation()
+            e.preventDefault()
             setIsResizing(true)
           }}
         />

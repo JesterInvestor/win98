@@ -146,6 +146,8 @@ export function GameMenu({ onDiskClick, onSwipeDown, onArrowDown }: GameMenuProp
     { id: 'load4', name: 'DISK 4', subtitle: 'SECRET.EXE', position: 'bottom-[15%] right-[12%] rotate-[10deg]' },
   ]
 
+  const [showFloppyPanel, setShowFloppyPanel] = useState(false)
+
   return (
     <div 
       className="relative w-full h-screen bg-gradient-to-br from-[#008080] to-[#006666] flex flex-col items-center justify-center overflow-hidden"
@@ -154,6 +156,48 @@ export function GameMenu({ onDiskClick, onSwipeDown, onArrowDown }: GameMenuProp
     >
       {/* Scanlines effect */}
       <div className="absolute inset-0 pointer-events-none z-50 bg-[repeating-linear-gradient(0deg,rgba(0,0,0,0.05)_0px,rgba(0,0,0,0.05)_1px,transparent_1px,transparent_2px)]" />
+
+      {/* Floppy Disks Button */}
+      <div className="absolute top-4 right-4 z-60">
+        <button
+          className="bg-[#c0c0c0] border-2 border-t-white border-l-white border-r-[#808080] border-b-[#808080] px-3 py-1 rounded text-sm shadow-md"
+          onClick={() => {
+            playSound('hover')
+            setShowFloppyPanel((s) => !s)
+          }}
+          onTouchStart={(e) => {
+            e.stopPropagation()
+            playSound('hover')
+            setShowFloppyPanel((s) => !s)
+          }}
+        >
+          Floppy Disks
+        </button>
+      </div>
+
+      {/* Floppy Panel (clickable/touchable list of disks) */}
+      {showFloppyPanel && (
+        <div className="absolute top-16 right-4 z-70 w-44 bg-[#c0c0c0] border-2 border-white border-r-[#808080] border-b-[#808080] shadow-lg">
+          {disks.map((d) => (
+            <button
+              key={d.id}
+              className="w-full text-left px-3 py-2 hover:bg-blue-600 hover:text-white text-xs border-b border-[#808080]"
+              onClick={() => {
+                handleDiskClick(d.id, d.name, d.subtitle)
+                setShowFloppyPanel(false)
+              }}
+              onTouchStart={(e) => {
+                e.stopPropagation()
+                handleDiskClick(d.id, d.name, d.subtitle)
+                setShowFloppyPanel(false)
+              }}
+            >
+              <div className="font-bold">{d.name}</div>
+              <div className="text-[10px] text-[#666]">{d.subtitle}</div>
+            </button>
+          ))}
+        </div>
+      )}
 
       {/* Keyboard area */}
       <div className="relative w-[90%] max-w-[900px] animate-[shake_2s_ease-in-out_infinite]">

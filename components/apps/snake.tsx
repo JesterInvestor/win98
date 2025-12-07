@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useState, useEffect, useCallback } from "react"
+import { useState, useEffect, useCallback, useRef } from "react"
 import { Button } from "@/components/ui/button"
 
 interface Position {
@@ -165,6 +165,52 @@ export function Snake() {
     return () => window.removeEventListener("keydown", handleKeyPress)
   }, [gameStatus])
 
+  // Touch / swipe controls
+  const touchStartRef = useRef<{ x: number; y: number } | null>(null)
+  const touchMoveRef = useRef<{ x: number; y: number } | null>(null)
+  const SWIPE_THRESHOLD = 20
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    e.preventDefault()
+    const t = e.touches[0]
+    touchStartRef.current = { x: t.clientX, y: t.clientY }
+    touchMoveRef.current = null
+  }
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    e.preventDefault()
+    const t = e.touches[0]
+    touchMoveRef.current = { x: t.clientX, y: t.clientY }
+  }
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    e.preventDefault()
+    const start = touchStartRef.current
+    const end = touchMoveRef.current ?? (e.changedTouches && e.changedTouches[0] ? { x: e.changedTouches[0].clientX, y: e.changedTouches[0].clientY } : null)
+    touchStartRef.current = null
+    touchMoveRef.current = null
+    if (!start || !end) return
+
+    const dx = end.x - start.x
+    const dy = end.y - start.y
+
+    if (Math.abs(dx) > Math.abs(dy)) {
+      // horizontal swipe
+      if (dx > SWIPE_THRESHOLD) {
+        setDirection(prev => (prev !== "LEFT" ? "RIGHT" : prev))
+      } else if (dx < -SWIPE_THRESHOLD) {
+        setDirection(prev => (prev !== "RIGHT" ? "LEFT" : prev))
+      }
+    } else {
+      // vertical swipe
+      if (dy > SWIPE_THRESHOLD) {
+        setDirection(prev => (prev !== "UP" ? "DOWN" : prev))
+      } else if (dy < -SWIPE_THRESHOLD) {
+        setDirection(prev => (prev !== "DOWN" ? "UP" : prev))
+      }
+    }
+  }
+
   const getCellContent = (x: number, y: number) => {
     // Check if it's the snake head
     if (snake.length > 0 && snake[0].x === x && snake[0].y === y) {
@@ -219,7 +265,7 @@ export function Snake() {
       </div>
 
       {/* Game Board */}
-      <div className="flex-1 flex items-center justify-center">
+      <div className="flex-1 flex items-center justify-center" onTouchStart={handleTouchStart} onTouchMove={handleTouchMove} onTouchEnd={handleTouchEnd}>
         <div 
           className="grid gap-0 border-2 border-[#808080] border-t-white border-l-white bg-black"
           style={{ gridTemplateColumns: `repeat(${BOARD_SIZE}, 1fr)` }}

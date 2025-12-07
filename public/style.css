@@ -1,0 +1,364 @@
+/* Reset and base styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'MS Sans Serif', 'Tahoma', Arial, sans-serif;
+  overflow: hidden;
+}
+
+/* Main game container */
+#gameContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: linear-gradient(135deg, #008080 0%, #006666 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Keyboard area container */
+#keyboardArea {
+  position: relative;
+  width: 90%;
+  max-width: 900px;
+  perspective: 1000px;
+  animation: shake 2s infinite ease-in-out;
+}
+
+/* Messy keyboard styling */
+#messyKeyboard {
+  background: linear-gradient(135deg, #e0e0e0 0%, #c0c0c0 100%);
+  border: 4px solid #808080;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 
+    0 8px 16px rgba(0, 0, 0, 0.5),
+    inset 0 2px 4px rgba(255, 255, 255, 0.5);
+  transform: rotateX(5deg);
+}
+
+.keyboard-row {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 4px;
+  justify-content: center;
+}
+
+.key {
+  background: linear-gradient(180deg, #f0f0f0 0%, #d0d0d0 100%);
+  border: 2px solid #a0a0a0;
+  border-radius: 4px;
+  padding: 8px;
+  min-width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: bold;
+  color: #000;
+  box-shadow: 
+    0 2px 4px rgba(0, 0, 0, 0.3),
+    inset 0 1px 2px rgba(255, 255, 255, 0.5);
+  cursor: default;
+  user-select: none;
+}
+
+.key-wide {
+  min-width: 60px;
+}
+
+.key-wider {
+  min-width: 75px;
+}
+
+.key-widest {
+  min-width: 90px;
+}
+
+.key-spacebar {
+  min-width: 250px;
+}
+
+/* Shake animation for keyboard */
+@keyframes shake {
+  0%, 100% { 
+    transform: rotateX(5deg) rotate(-0.5deg) translateY(0); 
+  }
+  25% { 
+    transform: rotateX(5deg) rotate(0.5deg) translateY(-2px); 
+  }
+  50% { 
+    transform: rotateX(5deg) rotate(-0.3deg) translateY(0); 
+  }
+  75% { 
+    transform: rotateX(5deg) rotate(0.3deg) translateY(-1px); 
+  }
+}
+
+/* Floppy disk styling */
+.floppy {
+  position: absolute;
+  width: 120px;
+  height: 140px;
+  background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
+  border: 3px solid #000;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 
+    0 8px 16px rgba(0, 0, 0, 0.8),
+    inset 0 2px 4px rgba(255, 255, 255, 0.1);
+  transition: all 0.2s ease;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+}
+
+.floppy:hover {
+  transform: scale(1.15) translateY(-5px);
+  box-shadow: 
+    0 12px 24px rgba(0, 0, 0, 0.9),
+    inset 0 2px 4px rgba(255, 255, 255, 0.2);
+  z-index: 20;
+}
+
+.floppy:active {
+  transform: scale(1.05) translateY(-2px);
+}
+
+/* Floppy disk top section */
+.floppy-top {
+  width: 100%;
+  height: 25px;
+  background: linear-gradient(90deg, #3a3a3a 0%, #2a2a2a 100%);
+  border-radius: 4px;
+  margin-bottom: 8px;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* Floppy disk label */
+.floppy-label {
+  flex: 1;
+  background: #f0f0f0;
+  border: 2px solid #666;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 8px;
+  margin-bottom: 8px;
+}
+
+.floppy-text {
+  font-size: 14px;
+  font-weight: bold;
+  color: #000;
+  text-align: center;
+  font-family: 'Courier New', monospace;
+}
+
+.floppy-subtitle {
+  font-size: 9px;
+  color: #666;
+  margin-top: 4px;
+  text-align: center;
+  font-family: 'Courier New', monospace;
+}
+
+/* Floppy disk metal shutter */
+.floppy-metal {
+  width: 100%;
+  height: 20px;
+  background: linear-gradient(90deg, #888 0%, #666 50%, #888 100%);
+  border-radius: 2px;
+  box-shadow: 
+    0 2px 4px rgba(0, 0, 0, 0.5),
+    inset 0 1px 2px rgba(255, 255, 255, 0.3);
+  position: relative;
+}
+
+.floppy-metal::before {
+  content: '';
+  position: absolute;
+  width: 30%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  left: 35%;
+  border-radius: 2px;
+}
+
+/* Scattered positioning for floppy disks */
+.floppy-1 {
+  top: 15%;
+  left: 10%;
+  transform: rotate(-8deg);
+}
+
+.floppy-2 {
+  top: 25%;
+  right: 15%;
+  transform: rotate(12deg);
+}
+
+.floppy-3 {
+  bottom: 20%;
+  left: 20%;
+  transform: rotate(-15deg);
+}
+
+.floppy-4 {
+  bottom: 15%;
+  right: 12%;
+  transform: rotate(10deg);
+}
+
+/* Instructions text */
+#instructions {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: bold;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  z-index: 100;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 15px 30px;
+  border-radius: 8px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Blinking arrow animation */
+.blink {
+  animation: blink-animation 1s infinite;
+  font-size: 24px;
+  display: inline-block;
+  margin-right: 8px;
+}
+
+@keyframes blink-animation {
+  0%, 49% {
+    opacity: 1;
+  }
+  50%, 100% {
+    opacity: 0;
+  }
+}
+
+/* Responsive design for mobile */
+@media (max-width: 768px) {
+  #keyboardArea {
+    width: 95%;
+    max-width: 100%;
+  }
+  
+  #messyKeyboard {
+    padding: 10px;
+  }
+  
+  .key {
+    min-width: 25px;
+    height: 30px;
+    font-size: 8px;
+    padding: 4px;
+  }
+  
+  .key-wide {
+    min-width: 40px;
+  }
+  
+  .key-wider {
+    min-width: 50px;
+  }
+  
+  .key-widest {
+    min-width: 60px;
+  }
+  
+  .key-spacebar {
+    min-width: 150px;
+  }
+  
+  .floppy {
+    width: 80px;
+    height: 100px;
+    padding: 6px;
+  }
+  
+  .floppy-text {
+    font-size: 11px;
+  }
+  
+  .floppy-subtitle {
+    font-size: 7px;
+  }
+  
+  .floppy-top {
+    height: 18px;
+  }
+  
+  .floppy-metal {
+    height: 15px;
+  }
+  
+  #instructions {
+    font-size: 14px;
+    padding: 10px 20px;
+    bottom: 20px;
+  }
+}
+
+/* Additional retro effect - scanlines */
+#gameContainer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.05) 0px,
+    rgba(0, 0, 0, 0.05) 1px,
+    transparent 1px,
+    transparent 2px
+  );
+  pointer-events: none;
+  z-index: 1000;
+  animation: scanlines 8s linear infinite;
+}
+
+@keyframes scanlines {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(4px);
+  }
+}
+
+/* Click feedback animation */
+@keyframes click-feedback {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.95);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.floppy.clicked {
+  animation: click-feedback 0.3s ease;
+}

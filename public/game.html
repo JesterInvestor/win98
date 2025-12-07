@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WIN98 - Retro Game Menu</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="gameContainer">
+    <div id="keyboardArea">
+      <!-- Messy keyboard using CSS shapes -->
+      <div id="messyKeyboard">
+        <div class="keyboard-row">
+          <div class="key">ESC</div>
+          <div class="key">F1</div>
+          <div class="key">F2</div>
+          <div class="key">F3</div>
+          <div class="key">F4</div>
+          <div class="key">F5</div>
+          <div class="key">F6</div>
+          <div class="key">F7</div>
+          <div class="key">F8</div>
+          <div class="key">F9</div>
+          <div class="key">F10</div>
+          <div class="key">F11</div>
+          <div class="key">F12</div>
+        </div>
+        <div class="keyboard-row">
+          <div class="key">~</div>
+          <div class="key">1</div>
+          <div class="key">2</div>
+          <div class="key">3</div>
+          <div class="key">4</div>
+          <div class="key">5</div>
+          <div class="key">6</div>
+          <div class="key">7</div>
+          <div class="key">8</div>
+          <div class="key">9</div>
+          <div class="key">0</div>
+          <div class="key">-</div>
+          <div class="key">=</div>
+          <div class="key key-wide">BACKSPACE</div>
+        </div>
+        <div class="keyboard-row">
+          <div class="key key-wide">TAB</div>
+          <div class="key">Q</div>
+          <div class="key">W</div>
+          <div class="key">E</div>
+          <div class="key">R</div>
+          <div class="key">T</div>
+          <div class="key">Y</div>
+          <div class="key">U</div>
+          <div class="key">I</div>
+          <div class="key">O</div>
+          <div class="key">P</div>
+          <div class="key">[</div>
+          <div class="key">]</div>
+          <div class="key key-wide">\</div>
+        </div>
+        <div class="keyboard-row">
+          <div class="key key-wider">CAPS</div>
+          <div class="key">A</div>
+          <div class="key">S</div>
+          <div class="key">D</div>
+          <div class="key">F</div>
+          <div class="key">G</div>
+          <div class="key">H</div>
+          <div class="key">J</div>
+          <div class="key">K</div>
+          <div class="key">L</div>
+          <div class="key">;</div>
+          <div class="key">'</div>
+          <div class="key key-wider">ENTER</div>
+        </div>
+        <div class="keyboard-row">
+          <div class="key key-widest">SHIFT</div>
+          <div class="key">Z</div>
+          <div class="key">X</div>
+          <div class="key">C</div>
+          <div class="key">V</div>
+          <div class="key">B</div>
+          <div class="key">N</div>
+          <div class="key">M</div>
+          <div class="key">,</div>
+          <div class="key">.</div>
+          <div class="key">/</div>
+          <div class="key key-widest">SHIFT</div>
+        </div>
+        <div class="keyboard-row">
+          <div class="key key-wider">CTRL</div>
+          <div class="key key-wide">WIN</div>
+          <div class="key key-wide">ALT</div>
+          <div class="key key-spacebar">SPACE</div>
+          <div class="key key-wide">ALT</div>
+          <div class="key key-wide">WIN</div>
+          <div class="key key-wider">CTRL</div>
+        </div>
+      </div>
+      
+      <!-- Floppy disk buttons overlapping the keyboard -->
+      <div class="floppy floppy-1" data-action="load1">
+        <div class="floppy-top"></div>
+        <div class="floppy-label">
+          <span class="floppy-text">DISK 1</span>
+          <span class="floppy-subtitle">GAMES.EXE</span>
+        </div>
+        <div class="floppy-metal"></div>
+      </div>
+      
+      <div class="floppy floppy-2" data-action="load2">
+        <div class="floppy-top"></div>
+        <div class="floppy-label">
+          <span class="floppy-text">DISK 2</span>
+          <span class="floppy-subtitle">APPS.EXE</span>
+        </div>
+        <div class="floppy-metal"></div>
+      </div>
+      
+      <div class="floppy floppy-3" data-action="load3">
+        <div class="floppy-top"></div>
+        <div class="floppy-label">
+          <span class="floppy-text">DISK 3</span>
+          <span class="floppy-subtitle">SETTINGS.EXE</span>
+        </div>
+        <div class="floppy-metal"></div>
+      </div>
+      
+      <div class="floppy floppy-4" data-action="load4">
+        <div class="floppy-top"></div>
+        <div class="floppy-label">
+          <span class="floppy-text">DISK 4</span>
+          <span class="floppy-subtitle">SECRET.EXE</span>
+        </div>
+        <div class="floppy-metal"></div>
+      </div>
+    </div>
+    
+    <p id="instructions">
+      <span class="blink">▼</span> Swipe down or press ↓ to continue...
+    </p>
+  </div>
+
+  <!-- Audio element for retro background music -->
+  <audio id="bgMusic" loop>
+    <source src="retro-menu-music.mp3" type="audio/mpeg">
+    <source src="retro-menu-music.ogg" type="audio/ogg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <script src="game.js"></script>
+</body>
+</html>

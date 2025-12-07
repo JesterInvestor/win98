@@ -70,7 +70,7 @@ export default function Windows98Emulator() {
   }
 
   if (showGate) {
-    return <GatePage onEnter={handleEnter} sessionTime={sessionTime} />
+    return <GatePage onEnter={handleEnter} sessionTime={sessionTime} onOpenWindow={openWindow} />
   }
 
   return (

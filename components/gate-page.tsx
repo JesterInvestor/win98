@@ -8,9 +8,10 @@ import { formatTime, formatNumber } from '@/lib/utils'
 interface GatePageProps {
   onEnter: () => void
   sessionTime: number
+  onOpenWindow?: (app: string) => void
 }
 
-export function GatePage({ onEnter, sessionTime }: GatePageProps) {
+export function GatePage({ onEnter, sessionTime, onOpenWindow }: GatePageProps) {
   const { address, isConnected } = useAccount()
   const { open } = useAppKit()
   const [earnedTokens, setEarnedTokens] = useState(0)
@@ -100,13 +101,26 @@ export function GatePage({ onEnter, sessionTime }: GatePageProps) {
               >
                 <span className="font-bold">Claim {formatNumber(earnedTokens)} $WIN98</span>
               </button>
+              <div className="space-y-2">
+                <button
+                  onClick={() => {
+                    if (onOpenWindow) {
+                      onOpenWindow('game-menu')
+                    }
+                    onEnter()
+                  }}
+                  className="w-full px-4 py-2 bg-[#ffd966] border-t-2 border-l-2 border-[#ffffff] border-r-2 border-b-2 border-r-[#000000] border-b-[#000000] active:border-t-[#000000] active:border-l-[#000000] active:border-r-[#ffffff] active:border-b-[#ffffff] text-sm hover:bg-[#ffd86f]"
+                >
+                  <span className="font-bold">Floppy Disks</span>
+                </button>
 
-              <button
-                onClick={onEnter}
-                className="w-full px-4 py-2 bg-[#c0c0c0] border-t-2 border-l-2 border-[#ffffff] border-r-2 border-b-2 border-r-[#000000] border-b-[#000000] active:border-t-[#000000] active:border-l-[#000000] active:border-r-[#ffffff] active:border-b-[#ffffff] text-sm hover:bg-[#d0d0d0]"
-              >
-                <span className="font-bold">Enter WIN98</span>
-              </button>
+                <button
+                  onClick={onEnter}
+                  className="w-full px-4 py-2 bg-[#c0c0c0] border-t-2 border-l-2 border-[#ffffff] border-r-2 border-b-2 border-r-[#000000] border-b-[#000000] active:border-t-[#000000] active:border-l-[#000000] active:border-r-[#ffffff] active:border-b-[#ffffff] text-sm hover:bg-[#d0d0d0]"
+                >
+                  <span className="font-bold">Enter WIN98</span>
+                </button>
+              </div>
             </div>
           )}
         </div>

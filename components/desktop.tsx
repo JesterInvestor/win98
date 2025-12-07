@@ -12,6 +12,7 @@ import {
   Music,
   Settings,
   HardDrive,
+  DiscIcon as Floppy,
 } from "lucide-react"
 import { useSystemSettings } from "@/hooks/use-system-settings"
 import { getWallpaperStyle } from "@/components/wallpapers"
@@ -28,6 +29,7 @@ export function Desktop({ onClick, onOpenWindow }: DesktopProps) {
     { name: "My Computer", icon: Monitor, app: "explorer" },
     { name: "Recycle Bin", icon: Trash2, app: "recycle" },
     { name: "Internet Explorer", icon: Globe, app: "ie" },
+    { name: "Floppy", icon: Floppy, app: "game-menu" },
     { name: "My Documents", icon: Folder, app: "documents" },
     { name: "Solitaire", icon: Gamepad2, app: "solitaire" },
     { name: "Minesweeper", icon: Gamepad2, app: "minesweeper" },

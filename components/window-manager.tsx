@@ -6,6 +6,7 @@ import { Calculator } from "@/components/apps/calculator"
 import { Minesweeper } from "@/components/apps/minesweeper"
 import { Paint } from "@/components/apps/paint"
 import { Explorer } from "@/components/apps/explorer"
+import { GameMenu } from "@/components/game-menu"
 import { Solitaire } from "@/components/apps/solitaire"
 import { ControlPanel } from "@/components/apps/control-panel"
 import { InternetExplorer } from "@/components/apps/internet-explorer"
@@ -44,6 +45,8 @@ export function WindowManager({ windows, onClose, onFocus, onMinimize, onMaximiz
       case "documents":
       case "network":
         return <Explorer />
+      case "game-menu":
+        return <GameMenu />
       case "games":
         return <Explorer initialPath={"C:\\Games\\"} />
       case "solitaire":

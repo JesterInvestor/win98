@@ -158,9 +158,10 @@ export function GameMenu({ onDiskClick, onSwipeDown, onArrowDown }: GameMenuProp
       <div className="absolute inset-0 pointer-events-none z-50 bg-[repeating-linear-gradient(0deg,rgba(0,0,0,0.05)_0px,rgba(0,0,0,0.05)_1px,transparent_1px,transparent_2px)]" />
 
       {/* Floppy Disks Button */}
-      <div className="absolute top-4 right-4 z-60">
+      <div className="absolute top-4 right-4 z-80">
         <button
-          className="bg-[#c0c0c0] border-2 border-t-white border-l-white border-r-[#808080] border-b-[#808080] px-3 py-1 rounded text-sm shadow-md"
+          className="bg-[#ffd966] border-2 border-t-white border-l-white border-r-[#808080] border-b-[#808080] px-4 py-2 rounded text-sm shadow-md flex items-center gap-2"
+          style={{ touchAction: 'manipulation' }}
           onClick={() => {
             playSound('hover')
             setShowFloppyPanel((s) => !s)
@@ -171,7 +172,8 @@ export function GameMenu({ onDiskClick, onSwipeDown, onArrowDown }: GameMenuProp
             setShowFloppyPanel((s) => !s)
           }}
         >
-          Floppy Disks
+          <span className="text-base">💽</span>
+          <span className="font-bold">Floppy Disks</span>
         </button>
       </div>
 

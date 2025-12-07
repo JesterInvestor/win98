@@ -29,13 +29,14 @@ export function Desktop({ onClick, onOpenWindow }: DesktopProps) {
     { name: "Recycle Bin", icon: Trash2, app: "recycle" },
     { name: "Internet Explorer", icon: Globe, app: "ie" },
     { name: "My Documents", icon: Folder, app: "documents" },
-    { name: "Games", icon: Gamepad2, app: "games" },
-    { name: "Notepad", icon: FileText, app: "notepad" },
-    { name: "Calculator", icon: Calculator, app: "calculator" },
-    { name: "Paint", icon: Palette, app: "paint" },
     { name: "Solitaire", icon: Gamepad2, app: "solitaire" },
     { name: "Minesweeper", icon: Gamepad2, app: "minesweeper" },
     { name: "Snake", icon: Gamepad2, app: "snake" },
+    { name: "FreeCell", icon: Gamepad2, app: "freecell" },
+    { name: "Hearts", icon: Gamepad2, app: "hearts" },
+    { name: "Notepad", icon: FileText, app: "notepad" },
+    { name: "Calculator", icon: Calculator, app: "calculator" },
+    { name: "Paint", icon: Palette, app: "paint" },
     { name: "Media Player", icon: Music, app: "mediaplayer" },
   ]
 
@@ -44,49 +45,64 @@ export function Desktop({ onClick, onOpenWindow }: DesktopProps) {
   return (
     <div className="absolute inset-0 p-2" onClick={onClick} style={wallpaperStyle}>
       {settings.desktop.showDesktopIcons && (
-        <div className="grid grid-cols-1 gap-4 w-20">
-          {desktopIcons.slice(0, 8).map((icon, index) => (
-            <div
-              key={index}
-              className="flex flex-col items-center cursor-pointer hover:bg-blue-600/20 p-2 rounded transition-colors"
-              onClick={(e) => {
-                e.stopPropagation()
-                onOpenWindow(icon.app)
-              }}
-              style={{
-                fontSize:
-                  settings.desktop.iconSize === "Small"
-                    ? "10px"
-                    : settings.desktop.iconSize === "Large"
-                      ? "14px"
-                      : "12px",
-              }}
-            >
-              <div
-                className="mb-1 text-white drop-shadow-lg"
-                style={{
-                  width:
-                    settings.desktop.iconSize === "Small"
-                      ? "24px"
-                      : settings.desktop.iconSize === "Large"
-                        ? "40px"
-                        : "32px",
-                  height:
-                    settings.desktop.iconSize === "Small"
-                      ? "24px"
-                      : settings.desktop.iconSize === "Large"
-                        ? "40px"
-                        : "32px",
-                }}
-              >
-                <icon.icon
-                  size={settings.desktop.iconSize === "Small" ? 24 : settings.desktop.iconSize === "Large" ? 40 : 32}
-                />
-              </div>
-              <span className="text-white text-center leading-tight drop-shadow-lg font-bold">{icon.name}</span>
+        (() => {
+          const perColumn = 7
+          const icons = desktopIcons // show all icons but organize into columns of 7
+          const cols = Math.max(1, Math.ceil(icons.length / perColumn))
+          const columns: typeof desktopIcons[] = Array.from({ length: cols }).map((_, i) =>
+            icons.slice(i * perColumn, i * perColumn + perColumn),
+          )
+
+          return (
+            <div className="flex gap-4">
+              {columns.map((col, colIndex) => (
+                <div key={colIndex} className="flex flex-col gap-4 w-20">
+                  {col.map((icon, index) => (
+                    <div
+                      key={index}
+                      className="flex flex-col items-center cursor-pointer hover:bg-blue-600/20 p-2 rounded transition-colors"
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        onOpenWindow(icon.app)
+                      }}
+                      style={{
+                        fontSize:
+                          settings.desktop.iconSize === "Small"
+                            ? "10px"
+                            : settings.desktop.iconSize === "Large"
+                              ? "14px"
+                              : "12px",
+                      }}
+                    >
+                      <div
+                        className="mb-1 text-white drop-shadow-lg"
+                        style={{
+                          width:
+                            settings.desktop.iconSize === "Small"
+                              ? "24px"
+                              : settings.desktop.iconSize === "Large"
+                                ? "40px"
+                                : "32px",
+                          height:
+                            settings.desktop.iconSize === "Small"
+                              ? "24px"
+                              : settings.desktop.iconSize === "Large"
+                                ? "40px"
+                                : "32px",
+                        }}
+                      >
+                        <icon.icon
+                          size={settings.desktop.iconSize === "Small" ? 24 : settings.desktop.iconSize === "Large" ? 40 : 32}
+                        />
+                      </div>
+                      <span className="text-white text-center leading-tight drop-shadow-lg font-bold">{icon.name}</span>
+                    </div>
+                  ))}
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
+          )
+        })()
       )}
 
       {/* Wallpaper overlay effects */}
